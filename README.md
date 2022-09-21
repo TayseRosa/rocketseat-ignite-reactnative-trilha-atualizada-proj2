@@ -2,7 +2,7 @@
 <h1 align="center"> Project React Native - Rocketseat Ignite - Projeto 2 - Ignite Teams</h1>
 
 # Demo
-<img src="readme.jpeg" style="width: 30%; ">
+<img src="readme.png" style="width: 100%; ">
 <!-- <img src="readme.gif" style="width: 30%; "> -->
 
 ---
