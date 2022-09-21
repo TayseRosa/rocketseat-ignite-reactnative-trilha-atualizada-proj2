@@ -5,12 +5,26 @@ import logoImg from '@assets/logo.png';
 
 import {
     Container,
-    Logo
+    Logo,
+    BackButton,
+    BackIcon
 } from './styles'
 
-export function Header() {
+type Props = {
+  showBackButton?: boolean;
+}
+
+export function Header({ showBackButton = false }:Props) {
+
   return (
     <Container>
+
+      { showBackButton && 
+        <BackButton>
+          <BackIcon color="#fff" />
+        </BackButton>
+      }
+
         <Logo source={logoImg} />
     </Container>
   );

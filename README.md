@@ -17,6 +17,12 @@
   - [Utilizando attrs](#utilizando-attrs)
   - [StatusBar](#statusbar)
   - [Criar tipagens para imagens .png](#criar-tipagens-para-imagens-png)
+  - [Adicionar a biblioteca phosphorIcons](#adicionar-a-biblioteca-phosphoricons)
+  - [Estilizar Icons diretamente pelo styles.ts](#estilizar-icons-diretamente-pelo-stylests)
+  - [Tipagem TouchableOpacityProps](#tipagem-touchableopacityprops)
+  - [Flatlist](#flatlist)
+  - [Criando um componente Input](#criando-um-componente-input)
+  - [Estilizando Placeholder do Input](#estilizando-placeholder-do-input)
 - [🚀 Technologies used in this project](#-technologies-used-in-this-project)
 - [📥 How to use](#-how-to-use)
 - [🚀 Developer](#-developer)
@@ -96,12 +102,19 @@ import { Groups } from '@screens/Groups'
 
 Font of lib: https://www.npmjs.com/package/babel-plugin-module-resolver
 
+Feito!
+
+---
+
 ## Estilização com Styled Components
 Instalar a lib:
 ```js
 npm install styled-components
 npm install --save-dev @types/styled-components @types/styled-components-react-native
 ```
+Feito!
+
+---
 
 ## Definindo o tema da aplicação
 Criar uma pasta em src/theme/index.ts
@@ -139,6 +152,7 @@ export default {
 
 Deixar o tema disponivel na aplicação:
 No App.tsx importar o Theme provider da seguinte forma:
+
 ```js
 import { ThemeProvider } from 'styled-components'
 import theme from './src/theme'
@@ -176,6 +190,10 @@ Feito! Agora só usar o tema no seu styles.ts, como por exemplo:
 background-color:${({ theme }) => theme.COLORS.GRAY_700 };
 ```
 
+Feito!
+
+---
+
 ## Como incluir fontes personalizadas em sua aplicação
 1- Pesquisa pela sua fonte em: https://fonts.google.com (por exemplo a fonte Roboto)
 
@@ -210,12 +228,20 @@ export default function App() {
 
 ```
 
+Feito!
+
+---
+
 ## Utilizando attrs
 ```js
 export const LoadingIndicator = styled.ActivityIndicator.attrs(({ theme}) => ({
     color: theme.COLORS.GREEN_700
 }))``;
 ```
+
+Feito!
+
+---
 
 ## StatusBar
 Utilizando desde o inicio(topo) do dispositivo:
@@ -233,6 +259,10 @@ return (
   );
 ```
 
+Feito!
+
+---
+
 ## Criar tipagens para imagens .png
 Quando o seu VSCode não reconhecer as importações de imagens .png, você precisa criar uma tipagem para isso da seguinte forma:
 src/@types/png.d.ts
@@ -242,6 +272,214 @@ declare module '*.png'
 Pronto! O seu arquivo .png já será reconhecido.
 
 ---
+
+## Adicionar a biblioteca phosphorIcons
+Fonte: https://phosphoricons.com/
+```js
+npm install --save phosphor-react-native 
+```
+E agora, precisamos fazer a instalação do react-native-svg, para poder utilizar esses icones em nossa aplicação:
+Fonte: https://docs.expo.dev/versions/latest/sdk/svg/
+
+```js
+npx expo install react-native-svg
+```
+
+E para utilizar os icons:
+```js
+import { CaretLeft } from 'phosphor-react-native';
+.
+.
+.
+<CaretLeft color="#fff" size={32} />
+```
+Pronto! Lib instalada!
+
+---
+
+## Estilizar Icons diretamente pelo styles.ts
+styles.ts
+```js
+import styled from 'styled-components/native';
+import { CaretLeft } from 'phosphor-react-native';
+
+export const BackIcon = styled(CaretLeft).attrs(({ theme }) => ({
+  size:36,
+  color:theme.COLORS.WHITE
+}))``;
+
+`;
+```
+index.tsx:
+```js
+import React from 'react';
+
+import {
+    Container,
+    BackIcon
+} from './styles'
+
+export function Header() {
+  return (
+    <Container>
+        <BackIcon color="#fff" />
+    </Container>
+  );
+}
+```
+
+Feito!
+
+---
+
+## Tipagem TouchableOpacityProps
+
+```js
+import React from 'react';
+import { TouchableOpacityProps } from 'react-native';
+
+import { 
+    Container,
+    Icon,
+    Title
+ } from './styles';
+
+ type Props = TouchableOpacityProps & {
+    title: string
+ }
+
+export function GroupCard( { title, ...rest }: Props ) {
+  return (
+    <Container>
+        <Icon />
+        <Title> {title} </Title>
+    </Container>
+  );
+}
+```
+E agora sim, quando damos um control + clique em onPress={}, aparecem as opções do TouchableOapcity
+
+```js
+<GroupCard title="Galera do Ignite" onPress={} />
+```
+
+Feito!
+
+---
+
+## Flatlist
+
+```js
+import React,{ useState } from 'react';
+import { FlatList } from 'react-native';
+
+import * as S from "./styles";
+
+import { Header } from "@components/Header";
+import { Highlight } from "@components/Highlight";
+import { GroupCard } from "@components/GroupCard";
+
+export function Groups() {
+  const [ groups, setGroups ] = useState<string[]>(['Galera da Rocket!', 'Amigos', 'Família']);
+
+  return (
+    <S.Container>
+      <Header />
+
+      <Highlight
+        title="Turmas"
+        subtitle="Jogue com a sua turma"
+      />
+
+      <FlatList 
+        data={groups}
+        keyExtractor={item => item}
+        renderItem={({ item })=> (
+          <GroupCard 
+            title={item} 
+          />
+        )}
+        contentContainerStyle={groups.length === 0 && {flex:1} }
+        ListEmptyComponent={()=><ListEmpty message='Que tal cadastrar a primeira turma?' />}
+      />
+    </S.Container>
+  );
+}
+```
+Feito!
+
+---
+
+## Criando um componente Input
+index.tsx
+```js
+import React from 'react';
+import { TextInputProps } from 'react-native';
+
+import { 
+    Container
+ } from './styles';
+
+export function Input({...rest}: TextInputProps) {
+  return (
+    <Container 
+      {...rest}
+      
+    />
+  );
+}
+```
+styles.ts
+```js
+import { TextInput } from "react-native";
+import styled from "styled-components/native";
+
+export const Container = styled(TextInput)`
+  flex:1;
+  min-height: 56px;
+  max-height:56px;
+
+  background-color: ${({theme}) => theme.COLORS.GRAY_700};
+  color: ${({theme}) => theme.COLORS.WHITE};
+  font-family: ${({theme}) => theme.FONT_FAMILY.REGULAR};
+  font-size: ${({theme}) => theme.FONT_SIZE.MD}px;
+
+  border-radius:6px;
+  padding:16px;
+`;
+```
+
+## Estilizando Placeholder do Input
+Desenvolvendo o componente Input:
+```js
+import React from 'react';
+import { TextInputProps } from 'react-native';
+import { useTheme } from 'styled-components/native';
+
+import { 
+    Container
+ } from './styles';
+
+export function Input({...rest}: TextInputProps) {
+  const { COLORS } = useTheme();
+
+  return (
+    <Container 
+      placeholderTextColor={COLORS.GRAY_300}
+      {...rest}
+    />
+  );
+}
+```
+
+Usando o componente Input
+```js
+<Input 
+  placeholder="Nome da turma"
+/>
+```
+
+
 
 # 🚀 Technologies used in this project
 The project was developed using the following technologies:

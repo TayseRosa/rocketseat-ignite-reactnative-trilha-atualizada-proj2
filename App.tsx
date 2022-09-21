@@ -1,4 +1,4 @@
-import { Groups } from '@screens/Groups'
+import { NewGroup } from '@screens/NewGroup'
 import { StatusBar } from 'react-native';
 
 //Themes e Fonts
@@ -19,13 +19,13 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* Status bar para que o App inicie bem do topo do dispositivo */}
+      {/* StatusBar para que o App inicie bem do topo do dispositivo */}
       <StatusBar 
         barStyle="light-content" 
         backgroundColor="transparent"
         translucent 
       />
-      { fontsLoaded ? <Groups /> : <Loading  /> }
+      { fontsLoaded ? <NewGroup /> : <Loading  /> }
     </ThemeProvider>
   );
 }
